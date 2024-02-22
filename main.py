@@ -49,18 +49,42 @@ def quadratic_multiply(x, y):
     return _quadratic_multiply(x,y).decimal_val
 
 def _quadratic_multiply(x, y):
-    ### TODO
-    pass
+  xvec = x.binary_vec
+  yvec = y.binary_vec
+
+  if x.decimal_val <= 1 and y.decimal_val <= 1:
+    return BinaryNumber(x.decimal_val * y.decimal_val)
+
+  else:
+    xvec, yvec = pad(xvec, yvec)
+    x_left, x_right = split_number(xvec)
+    y_left, y_right = split_number(yvec)
+    
+    # compute the recursive products
+    var1 = _quadratic_multiply(x_left, y_left)
+    var1 = bit_shift(var1, len(xvec))
+    
+    var2 = _quadratic_multiply(x_left, y_right)
+    var2 =bit_shift(var2, len(xvec)//2)
+    
+    var3 = _quadratic_multiply(x_right, y_left)
+    var3 = bit_shift(var3, len(xvec)//2)
+    
+    var4 = _quadratic_multiply(x_right, y_right)
+
+
+    return BinaryNumber(var1.decimal_val + var2.decimal_val + var3.decimal_val + var4.decimal_val)
+
     ###
 
 
     
     
-def test_quadratic_multiply(x, y, f):
-    start = time.time()
+#def test_quadratic_multiply(x, y, f):
+    #start = time.time()
     # multiply two numbers x, y using function f
     
-    return (time.time() - start)*1000
+    #return (time.time() - start)*1000
 
 
     
